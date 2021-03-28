@@ -25,10 +25,6 @@ class ProfileSerializer(serializers.ModelSerializer):
                  'last_name', 'email', 'password','documento','roles','notificaciones']
 
 
-class ProfileSerializer(serializers.ModelSerializer):
-    class Meta: 
-        model = Profile
-        fields = '__all__'
 
 class ProfileSerializer(serializers.Serializer):
     user = UserSerializer(source = 'userprofile')
@@ -63,22 +59,6 @@ class ProfileSerializer(serializers.ModelSerializer):
             Profile.objects.create(user = user, **userdetail)
         return validated_data
     
-"""
-
-class ProfileSerializer(serializers.ModelSerializer):
-    class Meta: 
-        model = Profile
-        fields = ['documento','roles', 'notificaciones']
-
-
-class UserSerializer(serializers.ModelSerializer):
-    profile = ProfileSerializer()
-   
-    class Meta: 
-        model = User
-        fields = ['username', 'first_name',
-                 'last_name', 'email', 'password', 'profile']
-    
     def create(self, validated_data):
         profile_data = validated_data.pop('profile')
         user = User.objects.create(**validated_data)
@@ -86,32 +66,44 @@ class UserSerializer(serializers.ModelSerializer):
         #for data in profile_data:
         #    Profile.objects.create(user=user, **profile_data)
         return user
-    
+"""
 
-    
 class RolSerializer(serializers.ModelSerializer):
     class Meta: 
         model = Rol
-        fields = '__all__'
+        fields = ['nombre', 'departamento']
+
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta: 
+        model = User
+        fields = ['username', 'first_name',
+                 'last_name', 'email', 'password', 'profile']
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+    user =  UserSerializer()
+    class Meta: 
+        model = Profile
+        fields = ['user','documento']
+    
+    def create(self, validated_data):
+        user_data = validated_data.pop('user')
+        profile = Profile.objects.create(**validated_data)
+        for data in user_data:
+            User.objects.create(profile=profile, **data)
+        return profile
+
+
+
+
 
 class NotificacionSerializer(serializers.ModelSerializer):
     class Meta: 
         model = Notificacion
         fields = '__all__'
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
+       
 class TramiteSolicitadoSerializer(serializers.ModelSerializer):
     class Meta:
         model = TramiteSolicitado

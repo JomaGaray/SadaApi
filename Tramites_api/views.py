@@ -30,7 +30,7 @@ class UserDetailView (RetrieveAPIView):
 """
 class UserCreateView (CreateAPIView):
     queryset = Profile.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = ProfileSerializer
 
 class UserListView (ListAPIView):
     queryset = Profile.objects.all()

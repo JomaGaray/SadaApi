@@ -27,22 +27,15 @@ class Notificacion(models.Model):
     descripcion = models.CharField(max_length=100, null = True)
     #pas = models.OneToOneField(Pass, on_delete=models.CASCADE) #one to one to pass, genera conflicto, lo pongo en pass
 
-"""
-class Usuario (models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null = True)
-    roles = models.ManyToManyField(Rol) #un usuario con muchos roles 
-    notificacion = models.ManyToManyField(Notificacion) #un usuario con muchas notificaciones
-"""
 
 #related name especifica que es tu modelo con respecto al referenciado
 #https://docs.djangoproject.com/en/3.1/topics/db/queries/#following-relationships-backward
 #https://docs.djangoproject.com/en/3.1/ref/models/fields/#django.db.models.ForeignKey.related_name
 class Profile (models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile', null = True)
     documento = models.IntegerField(null = True)
-    roles = models.ManyToManyField(Rol) #un usuario con muchos roles 
-    notificaciones = models.ManyToManyField(Notificacion) #un usuario con muchas notificaciones
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile',
-                                null = True)
+    #roles = models.ManyToManyField(Rol) #un usuario con muchos roles 
+    #notificaciones = models.ManyToManyField(Notificacion) #un usuario con muchas notificaciones
 """
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
@@ -53,6 +46,7 @@ def create_user_profile(sender, instance, created, **kwargs):
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
 """
+
 
 class Requerimiento(models.Model):
     nombre = models.CharField(max_length=50, null = True)
