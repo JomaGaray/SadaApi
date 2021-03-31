@@ -8,7 +8,7 @@ from .views import (TramiteListView,TramiteCreateView,TramiteDetailView, Tramite
 
 urlpatterns = [
     
-    #TRAMITES
+     #TRAMITES
     path('tramite/create/', TramiteCreateView.as_view(), name = 'tramiteCreate'),
     path('tramite/list/', TramiteListView.as_view(), name = 'tramiteList'),
     path('tramite/detail/<slug:nombre>/', TramiteDetailView.as_view(), name = 'tramiteDetail'),

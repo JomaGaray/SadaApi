@@ -28,6 +28,7 @@ class UserDetailView (RetrieveAPIView):
     #lookup_url_kwarg = 'first_name'
 
 """
+
 class UserCreateView (CreateAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileCreateSerializer
