@@ -30,18 +30,30 @@ class UserDetailView (RetrieveAPIView):
 """
 class UserCreateView (CreateAPIView):
     queryset = Profile.objects.all()
-    serializer_class = ProfileSerializer
+    serializer_class = ProfileCreateSerializer
 
 class UserListView (ListAPIView):
     queryset = Profile.objects.all()
-    serializer_class = ProfileSerializer
+    serializer_class = ProfileListSerializer
     pagination_class = PageNumberPagination
 
 class UserDetailView (RetrieveAPIView):
     queryset = Profile.objects.all()
-    serializer_class = ProfileSerializer
-    #lookup_field = 'first_name'
-    #lookup_url_kwarg = 'first_name'
+    serializer_class = ProfileCreateSerializer
+    lookup_field = 'user_id'
+  
+   
+"""
+    lookup_url_kwarg = 'username'
+    def get_queryset(self):
+    profile = self.request.profile
+    return user.
+
+     def get_object(self):
+        object.queryset = queryset.filter(pk=self.request.user.pk)
+        return object
+
+"""
 
 
 #ROL 
@@ -55,27 +67,27 @@ class NotificacionCreateView (CreateAPIView):
     serializer_class = NotificacionSerializer
 
 #TRAMITES
-class TipoTramiteCreateView (CreateAPIView):
-    queryset = TipoTramite.objects.all()
-    serializer_class = TipoTramiteSerializer
+class TramiteCreateView (CreateAPIView):
+    queryset = Tramite.objects.all()
+    serializer_class = TramiteSerializer
 
-class TipoTramiteListView (ListAPIView):
-    queryset = TipoTramite.objects.all()
-    serializer_class = TipoTramiteSerializer
+class TramiteListView (ListAPIView):
+    queryset = Tramite.objects.all()
+    serializer_class = TramiteSerializer
     pagination_class = PageNumberPagination
     # authentication_classes =
     # permissions_clasess = 
 
-class TipoTramiteDetailView (RetrieveAPIView):
-    queryset = TipoTramite.objects.all()
-    serializer_class = TipoTramiteSerializer
+class TramiteDetailView (RetrieveAPIView):
+    queryset = Tramite.objects.all()
+    serializer_class = TramiteSerializer
     lookup_field = 'nombre'
     lookup_url_kwarg = 'nombre'
 
 
-class TipoTramiteReqDetailView (RetrieveAPIView):
-    queryset = TipoTramite.objects.all()
-    serializer_class = TipoTramiteReqSerializer
+class TramiteReqDetailView (RetrieveAPIView):
+    queryset = Tramite.objects.all()
+    serializer_class = TramiteReqSerializer
     lookup_field = 'nombre'
     lookup_url_kwarg = 'nombre'
 

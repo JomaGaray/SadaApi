@@ -7,14 +7,14 @@ from django.contrib.auth.models import User
 # https://www.django-rest-framework.org/api-guide/serializers/#modelserializer
 
 
-class TipoTramiteSerializer(serializers.ModelSerializer):
+class TramiteSerializer(serializers.ModelSerializer):
     class Meta:
-        model = TipoTramite
+        model = Tramite
         fields = '__all__'
 
-class TipoTramiteReqSerializer(serializers.ModelSerializer):
+class TramiteReqSerializer(serializers.ModelSerializer):
     class Meta:
-        model = TipoTramite
+        model = Tramite
         fields = ['nombre','requerimientos']
 
 """
@@ -35,6 +35,7 @@ class ProfileSerializer(serializers.Serializer):
     class Meta:
         model =  User
         fields = ['username', 'first_name', 'last_name', 'email', 'password','documento']
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta: 
         model = User
@@ -75,26 +76,46 @@ class RolSerializer(serializers.ModelSerializer):
 
 
 
-class UserSerializer(serializers.ModelSerializer):
+class UserCreateSerializer(serializers.ModelSerializer):
     class Meta: 
         model = User
         fields = ['username', 'first_name',
-                 'last_name', 'email', 'password', 'profile']
+                 'last_name', 'email', 'password']
 
-
-class ProfileSerializer(serializers.ModelSerializer):
-    user =  UserSerializer()
+#https://www.django-rest-framework.org/api-guide/relations/#writable-nested-serializers
+class ProfileCreateSerializer(serializers.ModelSerializer):
+    user =  UserCreateSerializer()
     class Meta: 
         model = Profile
         fields = ['user','documento']
     
     def create(self, validated_data):
+       profile_data = validated_data.pop('documento') #valido los datos del perfil
+       user_data = validated_data.pop('user') #valido los datos de user 
+       usuario=User.objects.create(**user_data) #creo un usuario con los datos validados
+       profile = Profile.objects.create(user=usuario,documento=profile_data) #creo el perfil con el usuario y los datos
+       return profile
+""" 
+    def create(self, validated_data):
         user_data = validated_data.pop('user')
         profile = Profile.objects.create(**validated_data)
         for data in user_data:
-            User.objects.create(profile=profile, **data)
+            User.objects.create(**data, profile=profile) #hay un error en esta linea
         return profile
+"""
 
+
+class UserListSerializer(serializers.ModelSerializer):
+    class Meta: 
+        model = User
+        fields = ['username', 'first_name',
+                 'last_name', 'email']
+
+class ProfileListSerializer(serializers.ModelSerializer):
+    user =  UserListSerializer()
+    class Meta: 
+        model = Profile
+        fields = ['user','documento']
 
 
 
