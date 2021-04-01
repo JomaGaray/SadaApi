@@ -84,6 +84,19 @@ WSGI_APPLICATION = 'Sada.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
+        'NAME':'sadadb',
+        'USER': 'jose',
+        'PASSWORD': 'josegaray1498', 
+        'HOST': 'localhost',
+        'DATABASE_PORT': '5432',
+    }
+}
+
+"""
+Configuracion para Windows
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME':'sada',
         'USER': 'postgres',
         'PASSWORD': '123456', #password de postgres no de master
@@ -91,6 +104,7 @@ DATABASES = {
         'DATABASE_PORT': '5432',
     }
 }
+"""
 
 
 # Password validation
